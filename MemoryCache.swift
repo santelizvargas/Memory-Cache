@@ -9,9 +9,9 @@ import Foundation
 
 final class MemoryCache<Key: Hashable, Value> {
     private let cache = NSCache<CacheKey, CacheValue>()
-    
+
     // MARK: - Cache Value
-    
+
     private final class CacheValue {
         let value: Value
         
@@ -19,38 +19,37 @@ final class MemoryCache<Key: Hashable, Value> {
             self.value = value
         }
     }
-    
+
     // MARK: - Cache Key
-    
+
     private final class CacheKey: NSObject {
-        private let key: Key
+        let key: Key
         
         init(_ key: Key) {
             self.key = key
         }
-        
+
         override func isEqual(_ object: Any?) -> Bool {
-            guard let other = object as? CacheKey else {
-                return false
-            }
+            guard let other = object as? CacheKey else { return false }
             return key == other.key
         }
-        
+
         override var hash: Int { key.hashValue }
     }
-    
-    // MARK: - Subscript with key
-    
+
+    // MARK: - Subscript
+
     subscript(_ key: Key) -> Value? {
-        get { cache.object(forKey: CacheKey(key))?.value }
+        get {
+            cache.object(forKey: CacheKey(key))?.value
+        }
         set {
+            let cacheKey = CacheKey(key)
+            
             if let newValue {
-                cache.setObject(
-                    CacheValue(newValue),
-                    forKey: CacheKey(key)
-                )
+                cache.setObject(CacheValue(newValue), forKey: cacheKey)
             } else {
-                cache.removeObject(forKey: CacheKey(key))
+                cache.removeObject(forKey: cacheKey)
             }
         }
     }
