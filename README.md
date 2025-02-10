@@ -9,7 +9,7 @@ MemoryCache is a generic in-memory cache implementation for iOS applications, de
 - Thread-safe implementation.
 - Ideal for temporary data storage in iOS.
 
-## 🛠 Installation and Usage
+## 🛠 Usage
 
 To start using `MemoryCache`, simply create an instance and define the key and value types:
 
